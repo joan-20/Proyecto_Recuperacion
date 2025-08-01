@@ -20,7 +20,7 @@ public class TutoriasControl {
         File archivo = new File("tutores.csv");
         if (!archivo.exists()) {
             try {
-                archivo.createNewFile();  // Crea el archivo si no existe
+                archivo.createNewFile(); 
                 System.out.println("Archivo 'tutores.csv' no existía, pero fue creado.");
             } catch (IOException e) {
                 System.out.println("Error al crear el archivo 'tutores.csv'.");
@@ -46,10 +46,10 @@ public class TutoriasControl {
     public void cargarEstudiantesDesdeCSV() {
     File archivo = new File("estudiantes.csv");
     
-        // Verificamos si el archivo existe; si no, lo creamos vacío
+
         if (!archivo.exists()) {
             try {
-                archivo.createNewFile();  // Crea el archivo si no existe
+                archivo.createNewFile();  
                 System.out.println("Archivo 'estudiantes.csv' no existía, pero fue creado.");
             } catch (IOException e) {
                 System.out.println("Error al crear el archivo 'estudiantes.csv'.");
@@ -75,11 +75,10 @@ public class TutoriasControl {
 
     public void cargarTutoriasDesdeCSV() {
     File archivo = new File("tutorias.csv");
-    
-    // Verificamos si el archivo existe; si no, lo creamos vacío
+
     if (!archivo.exists()) {
         try {
-            archivo.createNewFile();  // Crea el archivo si no existe
+            archivo.createNewFile();
             System.out.println("Archivo 'tutorias.csv' no existía, pero fue creado.");
         } catch (IOException e) {
             System.out.println("Error al crear el archivo 'tutorias.csv'.");
@@ -87,17 +86,16 @@ public class TutoriasControl {
         }
     }
 
-    // Leemos el archivo CSV
+
     try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
         String line;
         while ((line = reader.readLine()) != null) {
             String[] datos = line.split(",");
             String nombre = datos[0];
             String cedulaTutor = datos[1];
-            String tipoTutoria = datos[2]; // "individual" o "grupal"
-            String tipoAsistencia = datos[3]; // "presencial" o "virtual"
-            
-            // Buscar el tutor correspondiente por cédula
+            String tipoTutoria = datos[2]; 
+            String tipoAsistencia = datos[3]; 
+
             Tutor tutor = buscarTutorPorCedula(cedulaTutor);
             
             Tutoria tutoria = null;
@@ -123,13 +121,12 @@ public class TutoriasControl {
     }
 }
 
-    // Métodos de Serialización (Guardar a archivos CSV)
 
     public void guardarTutoresEnCSV() {
         File archivo = new File("tutores.csv");
         if (!archivo.exists()) {
             try {
-                archivo.createNewFile();  // Crea el archivo si no existe
+                archivo.createNewFile(); 
                 System.out.println("Archivo 'tutores.csv' no existía, pero fue creado.");
             } catch (IOException e) {
                 System.out.println("Error al crear el archivo 'tutores.csv'.");
@@ -151,7 +148,7 @@ public class TutoriasControl {
        File archivo = new File("estudiantes.csv");
        if (!archivo.exists()) {
            try {
-               archivo.createNewFile();  // Crea el archivo si no existe
+               archivo.createNewFile(); 
                System.out.println("Archivo 'estudiantes.csv' no existía, pero fue creado.");
            } catch (IOException e) {
                System.out.println("Error al crear el archivo 'estudiantes.csv'.");
@@ -173,7 +170,7 @@ public class TutoriasControl {
        File archivo = new File("tutorias.csv");
        if (!archivo.exists()) {
            try {
-               archivo.createNewFile();  // Crea el archivo si no existe
+               archivo.createNewFile();
                System.out.println("Archivo 'tutorias.csv' no existía, pero fue creado.");
            } catch (IOException e) {
                System.out.println("Error al crear el archivo 'tutorias.csv'.");
@@ -188,17 +185,16 @@ public class TutoriasControl {
                // Si es una tutoria individual, solo hay un estudiante
                if (tutoria instanceof TutoriaIndividual) {
                    Estudiante est = ((TutoriaIndividual) tutoria).estudiante;
-                   estudiantesStr = est.cedula; // Solo un estudiante
+                   estudiantesStr = est.cedula; 
                } 
-               // Si es una tutoria grupal, recorremos la lista de estudiantes
                else if (tutoria instanceof TutoriaGrupal) {
                    for (Estudiante est : ((TutoriaGrupal) tutoria).estudiantes) {
-                       estudiantesStr += est.cedula + ";"; // Separamos por punto y coma
+                       estudiantesStr += est.cedula + ";"; 
                    }
                }
 
                writer.write(tutoria.nombre + "," + tutoria.tutor.cedula + "," + tutoria.tipo + "," + 
-                            estudiantesStr);  // Guardamos el tipo y los estudiantes
+                            estudiantesStr);  
                writer.newLine();
            }
        } catch (IOException e) {
