@@ -50,7 +50,9 @@ public class TutoriaVista {
                 calcular();
                 break;
             case "7":
-                // Mostrar estadísticas (pendiente)
+              
+                tc.mostrarEstadisticas(); 
+
                 break;
             case "8":
                 System.out.println("Adiós!!");
@@ -193,7 +195,7 @@ public class TutoriaVista {
 
     if (verifi) {
         tc.ingresarTutor(new Tutor(nom, ced, mail, mat));
-        tc.guardarTutoresEnCSV(); 
+        tc.guardarTutoresEnCSV(); // <- AÑADE ESTA LÍNEA
         System.out.println("Tutor registrado y guardado en CSV.");
     } else {
         System.out.println("Cédula ya registrada.");
@@ -210,7 +212,7 @@ public class TutoriaVista {
     boolean verifi = tc.verificarCedula(ced, 2);
     if (verifi) {
         tc.ingresarEstudiante(new Estudiante(nom, ced, mail));
-        tc.guardarEstudiantesEnCSV(); 
+        tc.guardarEstudiantesEnCSV(); // <- AÑADE ESTA LÍNEA
         System.out.println("Estudiante registrado y guardado en CSV.");
     } else {
         System.out.println("Cédula ya registrada.");
