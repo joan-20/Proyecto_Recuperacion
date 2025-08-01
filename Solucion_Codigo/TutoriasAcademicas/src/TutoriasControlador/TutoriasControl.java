@@ -20,7 +20,7 @@ public class TutoriasControl {
         File archivo = new File("tutores.csv");
         if (!archivo.exists()) {
             try {
-                archivo.createNewFile(); 
+                archivo.createNewFile();  
                 System.out.println("Archivo 'tutores.csv' no existía, pero fue creado.");
             } catch (IOException e) {
                 System.out.println("Error al crear el archivo 'tutores.csv'.");
@@ -46,10 +46,10 @@ public class TutoriasControl {
     public void cargarEstudiantesDesdeCSV() {
     File archivo = new File("estudiantes.csv");
     
-
+        // Verificamos si el archivo existe; si no, lo creamos vacío
         if (!archivo.exists()) {
             try {
-                archivo.createNewFile();  
+                archivo.createNewFile();  // Crea el archivo si no existe
                 System.out.println("Archivo 'estudiantes.csv' no existía, pero fue creado.");
             } catch (IOException e) {
                 System.out.println("Error al crear el archivo 'estudiantes.csv'.");
@@ -75,10 +75,11 @@ public class TutoriasControl {
 
     public void cargarTutoriasDesdeCSV() {
     File archivo = new File("tutorias.csv");
-
+    
+    // Verificamos si el archivo existe; si no, lo creamos vacío
     if (!archivo.exists()) {
         try {
-            archivo.createNewFile();
+            archivo.createNewFile();  // Crea el archivo si no existe
             System.out.println("Archivo 'tutorias.csv' no existía, pero fue creado.");
         } catch (IOException e) {
             System.out.println("Error al crear el archivo 'tutorias.csv'.");
@@ -86,7 +87,7 @@ public class TutoriasControl {
         }
     }
 
-
+    // Leemos el archivo CSV
     try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
         String line;
         while ((line = reader.readLine()) != null) {
@@ -94,8 +95,9 @@ public class TutoriasControl {
             String nombre = datos[0];
             String cedulaTutor = datos[1];
             String tipoTutoria = datos[2]; 
-            String tipoAsistencia = datos[3]; 
-
+            String tipoAsistencia = datos[3];
+            
+       
             Tutor tutor = buscarTutorPorCedula(cedulaTutor);
             
             Tutoria tutoria = null;
@@ -105,7 +107,7 @@ public class TutoriasControl {
                 tutoria = new TutoriaGrupal(nombre, tipoAsistencia, tutor);
             }
 
-            // Agregar estudiantes a la tutoría si existen
+          
             String[] estudiantesAsignados = datos[4].split(";");
             for (String cedEstudiante : estudiantesAsignados) {
                 Estudiante est = buscarEstudiantePorCedula(cedEstudiante);
@@ -121,12 +123,13 @@ public class TutoriasControl {
     }
 }
 
+    // Métodos de Serialización (Guardar a archivos CSV)
 
     public void guardarTutoresEnCSV() {
         File archivo = new File("tutores.csv");
         if (!archivo.exists()) {
             try {
-                archivo.createNewFile(); 
+                archivo.createNewFile();  // Crea el archivo si no existe
                 System.out.println("Archivo 'tutores.csv' no existía, pero fue creado.");
             } catch (IOException e) {
                 System.out.println("Error al crear el archivo 'tutores.csv'.");
@@ -148,7 +151,7 @@ public class TutoriasControl {
        File archivo = new File("estudiantes.csv");
        if (!archivo.exists()) {
            try {
-               archivo.createNewFile(); 
+               archivo.createNewFile();  // Crea el archivo si no existe
                System.out.println("Archivo 'estudiantes.csv' no existía, pero fue creado.");
            } catch (IOException e) {
                System.out.println("Error al crear el archivo 'estudiantes.csv'.");
@@ -170,7 +173,7 @@ public class TutoriasControl {
        File archivo = new File("tutorias.csv");
        if (!archivo.exists()) {
            try {
-               archivo.createNewFile();
+               archivo.createNewFile();  // Crea el archivo si no existe
                System.out.println("Archivo 'tutorias.csv' no existía, pero fue creado.");
            } catch (IOException e) {
                System.out.println("Error al crear el archivo 'tutorias.csv'.");
@@ -185,16 +188,17 @@ public class TutoriasControl {
                // Si es una tutoria individual, solo hay un estudiante
                if (tutoria instanceof TutoriaIndividual) {
                    Estudiante est = ((TutoriaIndividual) tutoria).estudiante;
-                   estudiantesStr = est.cedula; 
+                   estudiantesStr = est.cedula; // Solo un estudiante
                } 
+               // Si es una tutoria grupal, recorremos la lista de estudiantes
                else if (tutoria instanceof TutoriaGrupal) {
                    for (Estudiante est : ((TutoriaGrupal) tutoria).estudiantes) {
-                       estudiantesStr += est.cedula + ";"; 
+                       estudiantesStr += est.cedula + ";"; // Separamos por punto y coma
                    }
                }
 
                writer.write(tutoria.nombre + "," + tutoria.tutor.cedula + "," + tutoria.tipo + "," + 
-                            estudiantesStr);  
+                            estudiantesStr);  // Guardamos el tipo y los estudiantes
                writer.newLine();
            }
        } catch (IOException e) {
@@ -287,6 +291,47 @@ public class TutoriasControl {
         }
     }
 
+    public void mostrarEstadisticas() {
+        int totalTutorias = this.tutorias.size();
+        int totalSesiones = 0;
+        int sesionesCanceladas = 0;
+        int totalMateriales = 0;
+        int totalDuracion = 0;
+        int sesionesConMateriales = 0;
+
+        for (Tutoria tutoria : this.tutorias) {
+            ArrayList<Sesion> sesiones = tutoria.sesiones;
+            if (sesiones == null) continue;
+
+            totalSesiones += sesiones.size();
+
+            for (Sesion sesion : sesiones) {
+                if (!sesion.activo) {
+                    sesionesCanceladas++;
+                }
+                totalDuracion += sesion.duracion;
+
+                if (sesion.materiales != null && !sesion.materiales.isEmpty()) {
+                    sesionesConMateriales++;
+                    totalMateriales += sesion.materiales.size();
+                }
+            }
+        }
+
+        System.out.println("==== Estadísticas Generales ====");
+        System.out.println("Total de tutorías registradas: " + totalTutorias);
+        System.out.println("Total de sesiones: " + totalSesiones);
+        System.out.println("Sesiones canceladas: " + sesionesCanceladas);
+        System.out.println("Sesiones con materiales: " + sesionesConMateriales);
+        System.out.println("Total de recursos usados: " + totalMateriales);
+
+        if (totalSesiones > 0) {
+            double promedioDuracion = (double) totalDuracion / totalSesiones;
+            System.out.printf("Duración promedio de sesiones: %.2f minutos%n", promedioDuracion);
+        } else {
+            System.out.println("No hay sesiones registradas para calcular duración promedio.");
+        }
+    }
 
     public void ingresarTutor(Tutor tutor) {
         tutores.add(tutor);
