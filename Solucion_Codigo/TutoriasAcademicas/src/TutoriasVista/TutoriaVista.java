@@ -193,7 +193,7 @@ public class TutoriaVista {
 
     if (verifi) {
         tc.ingresarTutor(new Tutor(nom, ced, mail, mat));
-        tc.guardarTutoresEnCSV(); // <- AÑADE ESTA LÍNEA
+        tc.guardarTutoresEnCSV(); 
         System.out.println("Tutor registrado y guardado en CSV.");
     } else {
         System.out.println("Cédula ya registrada.");
@@ -210,7 +210,7 @@ public class TutoriaVista {
     boolean verifi = tc.verificarCedula(ced, 2);
     if (verifi) {
         tc.ingresarEstudiante(new Estudiante(nom, ced, mail));
-        tc.guardarEstudiantesEnCSV(); // <- AÑADE ESTA LÍNEA
+        tc.guardarEstudiantesEnCSV(); 
         System.out.println("Estudiante registrado y guardado en CSV.");
     } else {
         System.out.println("Cédula ya registrada.");
