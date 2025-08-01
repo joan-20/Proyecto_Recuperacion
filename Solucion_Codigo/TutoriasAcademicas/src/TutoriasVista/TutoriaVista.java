@@ -16,48 +16,52 @@ public class TutoriaVista {
         tc.cargarEstudiantesDesdeCSV();
         tc.cargarTutoriasDesdeCSV();
         String opc;
-        do {
-            System.out.println("BIENVENIDO A LA PLATAFORMA DE TUTORIAS ACADEMICAS");
-            System.out.println("-------------------------------------------------");
-            System.out.println("1. Registrar docente tutor");
-            System.out.println("2. Registrar estudiante");
-            System.out.println("3. Registrar tutoria");
-            System.out.println("4. Ingresar nueva sesion");
-            System.out.println("5. Registrar asistencia");
-            System.out.println("6. calcular Avance y riesgo");
-            System.out.println("7. Mostrar estadisticas");
-            System.out.println("8. Salir");
-            opc = tcl.nextLine().trim();
-            switch (opc) {
-                case "1":
-                    registrarTutor();
-                    break;
-                case "2":
-                    registrarEstudiante();
-                    break;
-                case "3":
-                    registrarTutoria();
-                    break;
-                case "4":
-                    ingresarNuevaSesion();
-                    break;
-                case "5":
-                    registrarAsistencia();
-                    break;
-                case "6":
-                    calcular();
-                    break;
-                case "7":
-                    
-                    break;
-                case "8":
-                    System.out.println("Adios!!");
-                    break;
-                default:
-                    System.out.println("Seleccione una opcion correcta");;
-            }
-        } while (opc.equals("8"));
-    }
+ 
+    do {
+        System.out.println("BIENVENIDO A LA PLATAFORMA DE TUTORIAS ACADEMICAS");
+        System.out.println("-------------------------------------------------");
+        System.out.println("1. Registrar docente tutor");
+        System.out.println("2. Registrar estudiante");
+        System.out.println("3. Registrar tutoria");
+        System.out.println("4. Ingresar nueva sesion");
+        System.out.println("5. Registrar asistencia");
+        System.out.println("6. Calcular avance y riesgo");
+        System.out.println("7. Mostrar estadisticas");
+        System.out.println("8. Salir");
+        opc = tcl.nextLine().trim();
+        
+        switch (opc) {
+            case "1":
+                registrarTutor();
+                break;
+            case "2":
+                registrarEstudiante();
+                break;
+            case "3":
+                registrarTutoria();
+                break;
+            case "4":
+                ingresarNuevaSesion();
+                break;
+            case "5":
+                registrarAsistencia();
+                break;
+            case "6":
+                calcular();
+                break;
+            case "7":
+                // Mostrar estadísticas (pendiente)
+                break;
+            case "8":
+                System.out.println("Adiós!!");
+                break;
+            default:
+                System.out.println("Seleccione una opción correcta");
+        }
+            } while (!opc.equals("8"));
+        }
+
+    
     public static void calcular(){
         Tutoria tut = buscarTutoria();
         tc.calcularAvRie(tut);
@@ -133,21 +137,24 @@ public class TutoriaVista {
         int duracion = tcl.nextInt();
         tc.ingresarSesion(fecha, duracion, t);
     }
-    public static void registrarTutoria(){
-        System.out.println("Ingrese el nombre de la tutoria");
-        String nom = tcl.nextLine().trim();
-        System.out.println("Seleccione el tipo de tutoria : individual/grupal");
-        String tipo = tcl.nextLine().toLowerCase().trim();
-        System.out.println("Seleccione el tipo de asistencia : virtual/presencial");
-        String tipoA = tcl.nextLine().toLowerCase().trim();
-        System.out.println("Ingrese la cedula del Tutor");
-        String ced = tcl.nextLine().trim();
-        boolean verifi = tc.verificarCedula(ced, 1);
-        System.out.println((verifi)?"Cedula no encontrada" : "Tutoria creada");
-        Tutoria t = tc.ingresarTutoria(nom, ced, tipo, tipoA);
-        ingresarSesion(t);
-        ingresarEstudiante(t);
+    public static void registrarTutoria() {
+    System.out.println("Ingrese el nombre de la tutoria");
+    String nom = tcl.nextLine().trim();
+    System.out.println("Seleccione el tipo de tutoria : individual/grupal");
+    String tipo = tcl.nextLine().toLowerCase().trim();
+    System.out.println("Seleccione el tipo de asistencia : virtual/presencial");
+    String tipoA = tcl.nextLine().toLowerCase().trim();
+    System.out.println("Ingrese la cedula del Tutor");
+    String ced = tcl.nextLine().trim();
+    boolean verifi = tc.verificarCedula(ced, 1);
+    System.out.println((verifi) ? "Cédula no encontrada" : "Tutoria creada");
+    Tutoria t = tc.ingresarTutoria(nom, ced, tipo, tipoA);
+    ingresarSesion(t);
+    ingresarEstudiante(t);
+    tc.guardarTutoriasEnCSV(); 
+    System.out.println("Tutoria registrada y guardada en CSV.");
     }
+
     public static void ingresarEstudiante(Tutoria t){
         if (t instanceof TutoriaIndividual) {
             System.out.println("Ingrese la cedula del estudiante");
@@ -173,33 +180,41 @@ public class TutoriaVista {
             
         }
     }
-    public static void registrarTutor(){
-        System.out.println("Ingrese el nombre");
-        String nom = tcl.nextLine().trim();
-        System.out.println("Ingrese la cedula");
-        String ced = tcl.nextLine().trim();
-        System.out.println("Ingrese el correo");
-        String mail = tcl.nextLine().trim();
-        System.out.println("Ingrese la materia");
-        String mat = tcl.nextLine().trim();   
-        boolean verifi = tc.verificarCedula(ced, 1);
-        
-        if (verifi) {
-            tc.ingresarTutor(new Tutor(nom, ced, mail, mat));
-        }else
-            System.out.println("Cedula ya registrada");
+    public static void registrarTutor() {
+    System.out.println("Ingrese el nombre");
+    String nom = tcl.nextLine().trim();
+    System.out.println("Ingrese la cedula");
+    String ced = tcl.nextLine().trim();
+    System.out.println("Ingrese el correo");
+    String mail = tcl.nextLine().trim();
+    System.out.println("Ingrese la materia");
+    String mat = tcl.nextLine().trim();   
+    boolean verifi = tc.verificarCedula(ced, 1);
+
+    if (verifi) {
+        tc.ingresarTutor(new Tutor(nom, ced, mail, mat));
+        tc.guardarTutoresEnCSV(); // <- AÑADE ESTA LÍNEA
+        System.out.println("Tutor registrado y guardado en CSV.");
+    } else {
+        System.out.println("Cédula ya registrada.");
+     }
     }
-    public static void registrarEstudiante(){
-        System.out.println("Ingrese el nombre");
-        String nom = tcl.nextLine().trim();
-        System.out.println("Ingrese la cedula");
-        String ced = tcl.nextLine().trim();
-        System.out.println("Ingrese el correo");
-        String mail = tcl.nextLine().trim();
-        boolean verifi = tc.verificarCedula(ced, 2);
-        if (verifi) {
-            tc.ingresarEstudiante(new Estudiante(nom, ced, mail));
-        }else
-            System.out.println("Cedula ya registrada");
+
+   public static void registrarEstudiante() {
+    System.out.println("Ingrese el nombre");
+    String nom = tcl.nextLine().trim();
+    System.out.println("Ingrese la cedula");
+    String ced = tcl.nextLine().trim();
+    System.out.println("Ingrese el correo");
+    String mail = tcl.nextLine().trim();
+    boolean verifi = tc.verificarCedula(ced, 2);
+    if (verifi) {
+        tc.ingresarEstudiante(new Estudiante(nom, ced, mail));
+        tc.guardarEstudiantesEnCSV(); // <- AÑADE ESTA LÍNEA
+        System.out.println("Estudiante registrado y guardado en CSV.");
+    } else {
+        System.out.println("Cédula ya registrada.");
+        }
     }
+
 }
