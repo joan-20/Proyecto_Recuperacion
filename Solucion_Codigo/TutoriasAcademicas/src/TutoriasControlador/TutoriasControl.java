@@ -6,16 +6,14 @@ import TutoriasModelo.*;
 
 public class TutoriasControl {
 
-    // Las listas de tutorías, tutores y estudiantes
     public ArrayList<Tutoria> tutorias;
     public ArrayList<Tutor> tutores;
     public ArrayList<Estudiante> estudiantes;
 
-    // Métodos de Deserialización (Carga desde archivos CSV)
      public TutoriasControl() {
-        this.tutores = new ArrayList<>();  // Asegúrate de que la lista esté inicializada
-        this.estudiantes = new ArrayList<>();  // Asegúrate de que la lista esté inicializada
-        this.tutorias = new ArrayList<>();  // Asegúrate de que la lista esté inicializada
+        this.tutores = new ArrayList<>();  
+        this.estudiantes = new ArrayList<>();  
+        this.tutorias = new ArrayList<>();  
     }
 
     public void cargarTutoresDesdeCSV() {
@@ -199,7 +197,6 @@ public class TutoriasControl {
                    }
                }
 
-               // Escribimos los datos de la tutoría
                writer.write(tutoria.nombre + "," + tutoria.tutor.cedula + "," + tutoria.tipo + "," + 
                             estudiantesStr);  // Guardamos el tipo y los estudiantes
                writer.newLine();
@@ -211,7 +208,6 @@ public class TutoriasControl {
 
 
 
-    // Métodos Auxiliares
 
     private Tutor buscarTutorPorCedula(String cedula) {
         for (Tutor tutor : tutores) {
@@ -295,7 +291,6 @@ public class TutoriasControl {
         }
     }
 
-    // Métodos para ingresar y verificar tutores y estudiantes
 
     public void ingresarTutor(Tutor tutor) {
         tutores.add(tutor);
@@ -308,8 +303,7 @@ public class TutoriasControl {
     public boolean verificarCedula(String cedula, int tipo) {
     boolean verificado = true;
     
-    // Verificación de tutores
-    if (tipo == 1) { // Verificar tutor
+    if (tipo == 1) { 
         if (tutores != null) {
             for (Tutor tutor : tutores) {
                 if (tutor.cedula.equals(cedula)) {
@@ -320,8 +314,8 @@ public class TutoriasControl {
         }
     } 
     
-    // Verificación de estudiantes
-    else if (tipo == 2) { // Verificar estudiante
+   
+    else if (tipo == 2) {
         if (estudiantes != null) {
             for (Estudiante estudiante : estudiantes) {
                 if (estudiante.cedula.equals(cedula)) {
